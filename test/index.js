@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import nock from 'nock'
-import howard from '../src/howard';
+import howard from '../src/index';
 
 const pass = {
   body: 'I passed',

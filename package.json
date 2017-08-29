@@ -1,6 +1,6 @@
 {
   "name": "howard",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A wrapper for isomorphic fetch",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "test:examples": "node examples/",
     "cover": "cross-env BABEL_ENV=commonjs istanbul cover _mocha -- --compilers js:babel-register --recursive",
     "lint": "eslint src test",
-    "build": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build": "cross-env BABEL_ENV=commonjs babel src --out-dir ./",
     "prepublish": "npm run clean && npm run lint && npm run test && npm run build"
   },
   "repository": {
