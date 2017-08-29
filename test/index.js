@@ -17,6 +17,9 @@ describe('Howard Should', () => {
       .get('/pass')
       .reply(200, pass);
     nock('https://shoutinginfrench.com')
+      .post('/pass')
+      .reply(200, pass);
+    nock('https://shoutinginfrench.com')
       .get('/fail')
       .reply(404, pass);
   });
@@ -35,6 +38,14 @@ describe('Howard Should', () => {
 
   it('handle a get call', function(done) {
     api('/pass')
+      .then((res) => {
+        expect(pass.body).to.equal(res.body);
+      });
+    done();
+  })
+
+  it('handle a post call', function(done) {
+    api('/pass', {method: 'POST', body: {yo: 'hello my friend'}})
       .then((res) => {
         expect(pass.body).to.equal(res.body);
       });

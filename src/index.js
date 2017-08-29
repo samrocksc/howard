@@ -33,7 +33,7 @@ export default function howard(config = {}) {
 
   function apiFetch(path, options = {}) {
     let qs = '';
-    if (typeof options.body === 'object' && !(options.body instanceof FormData)) {
+    if (typeof options.body === 'object' && !(global.FormData && options.body instanceof FormData)) {
       options.body = JSON.stringify(options.body);
     }
 
