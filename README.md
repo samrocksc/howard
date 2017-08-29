@@ -9,7 +9,7 @@
 I simplify life!  If you are on a project that requires a lot of api Calls I can just handle the data retrieval in a quick and efficient manner!  Set a simple config file of the base URL and start making easier REST calls!
 
 ## Example
-```
+```javascript
 import howard from 'howard';
 
 const config = {
