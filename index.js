@@ -53,7 +53,7 @@ function howard() {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     var qs = '';
-    if (_typeof(options.body) === 'object' && !(options.body instanceof FormData)) {
+    if (_typeof(options.body) === 'object' && !(global.FormData && options.body instanceof FormData)) {
       options.body = JSON.stringify(options.body);
     }
 
