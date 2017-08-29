@@ -1,6 +1,6 @@
 {
   "name": "howard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A wrapper for isomorphic fetch",
   "main": "index.js",
   "scripts": {
