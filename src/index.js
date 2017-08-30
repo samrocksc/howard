@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import queryString from 'query-string';
 import { omitBy, startsWith, isUndefined } from 'lodash';
 
-export function handledFetch(path, options) {
+function handledFetch(path, options) {
   return fetch(path, options)
     .then((res) => {
       if (res.status >= 400) {
@@ -28,7 +28,7 @@ export function handledFetch(path, options) {
     });
 }
 
-export default function howard(config = {}) {
+function howard(config = {}) {
   config.url = config.url || '';
 
   function apiFetch(path, options = {}) {
@@ -54,3 +54,5 @@ export default function howard(config = {}) {
 
   return apiFetch;
 }
+
+export { howard, handledFetch };

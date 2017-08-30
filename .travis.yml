@@ -5,6 +5,8 @@ script:
   - npm run lint
   - npm run test
   - npm run build
+  - npm run cover
 branches:
   only:
     - master
+after_success: 'npm run coveralls'

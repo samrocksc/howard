@@ -3,11 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.handledFetch = exports.howard = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.handledFetch = handledFetch;
-exports.default = howard;
 
 var _isomorphicFetch = require('isomorphic-fetch');
 
@@ -73,3 +71,6 @@ function howard() {
 
   return apiFetch;
 }
+
+exports.howard = howard;
+exports.handledFetch = handledFetch;
