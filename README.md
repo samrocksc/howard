@@ -10,12 +10,14 @@
 
 I simplify life!  If you are on a project that requires a lot of api Calls I can just handle the data retrieval in a quick and efficient manner!  Set a simple config file of the base URL and start making easier REST calls!
 
-Howard is basically a factory function for an [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) call that extrapolates the JSON out of it and returns it as a promise.  Do whatever you want with the Promise, tag it in a chain.....tap it and use the results?  Make what you need to happen with it!
+Howard is basically a factory function for an [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) call that extracts JSON and returns it as a promise.  Do whatever you want with the Promise, tag it in a chain.....tap it and use the results?  Make what you need to happen with it!
 
-## Example
+## Examples!!!!
 ```javascript
+//
 import { howard } from 'howard';
 
+// Configuration, you can put this in a different project, or use it anywhere on your front end.
 const config = {
   url: 'http://theduck.com/api',
 }
@@ -51,4 +53,8 @@ api('/stuff', { method: 'GET', params: { id: 1 } })
   .then((res) => {
     return res;
   })
+
+
+// Need a fast GET?
+const listCall = Promise.resolve(api('/list'));
 ```
