@@ -22,7 +22,7 @@ const config = {
   url: 'http://theduck.com/api',
 }
 
-const api = apiFetch(config);
+const api = howard(config);
 
 api('/stuff', { method: 'GET' })
   .then((res) => {
