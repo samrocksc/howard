@@ -1,58 +1,48 @@
-import fetch from 'isomorphic-fetch';
-import queryString from 'query-string';
-import { omitBy, startsWith, isUndefined } from 'lodash';
+import 'isomorphic-fetch';
 
-function handledFetch(path, options) {
-  return fetch(path, options)
+function howard(path, options) {
+  return fetch(path, options);
+}
+
+function json(response) {
+  return Promise.resolve(response)
+    .then(res => res.json());
+}
+
+function text(response) {
+  return Promise.resolve(response)
+    .then(res => res.text());
+}
+
+function arrayBuffer(response) {
+  return Promise.resolve(response)
+    .then(res => res.arrayBuffer());
+}
+
+function blob(response) {
+  return Promise.resolve(response)
     .then((res) => {
-      if (res.status >= 400) {
-        const err = new Error('Bad response from server');
-        err.status = res.status;
-        const contentType = res.headers.get('content-type');
-
-        if (startsWith(contentType, 'application/json')) {
-          return res.json()
-            .then((content) => {
-              err.content = content;
-              throw err;
-            });
-        }
-
-        return res.text()
-          .then((content) => {
-            err.content = content;
-            throw err;
-          });
+      if (typeof res.blob === 'function') {
+        return res.blob();
       }
-      return res;
+      return Promise.reject(new Error('Method not implemented'));
     });
 }
 
-function howard(config = {}) {
-  config.url = config.url || '';
-
-  function apiFetch(path, options = {}) {
-    let qs = '';
-    if (typeof options.body === 'object' && !(global.FormData && options.body instanceof FormData)) {
-      options.body = JSON.stringify(options.body);
-    }
-
-    if (options.query) {
-      const query = omitBy(options.query, isUndefined);
-      qs = `?${queryString.stringify(query)}`;
-    }
-    Object.assign(options, { credentials: 'include' });
-
-    return handledFetch(`${config.url}${path}${qs}`, options)
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        }
-        return true;
-      });
-  }
-
-  return apiFetch;
+function formData(response) {
+  return Promise.resolve(response)
+    .then((res) => {
+      if (typeof res.formData === 'function') {
+        return res.formData();
+      }
+      return Promise.reject(new Error('Method not implemented'));
+    });
 }
 
-export { howard, handledFetch };
+function buffer(response) {
+  return Promise.resolve(response)
+    .then(res => res.buffer());
+}
+
+export { howard as default, json, text, arrayBuffer, blob, formData, buffer };
+
