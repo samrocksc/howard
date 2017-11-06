@@ -3,12 +3,47 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.buffer = exports.formData = exports.blob = exports.arrayBuffer = exports.text = exports.json = exports.default = undefined;
+exports.buffer = exports.formData = exports.blob = exports.arrayBuffer = exports.text = exports.json = exports.withDefaults = exports.default = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 require('isomorphic-fetch');
 
 function howard(path, options) {
   return fetch(path, options);
+}
+
+function withDefaults() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  config.url = config.url || '';
+
+  function defaultedClient(path) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    var qs = '';
+    if (_typeof(options.body) === 'object' && !(global.FormData && options.body instanceof FormData)) {
+      options.body = JSON.stringify(options.body);
+    }
+
+    if (options.query) {
+      // eslint-disable-next-line
+      var query = {};
+      // eslint-disable-next-line
+      for (var key in options.query) {
+        if (options.query[key] !== undefined) {
+          query[key] = options.query[key];
+        }
+      }
+
+      qs = '?' + queryString.stringify(query);
+    }
+    Object.assign({ credentials: 'include' }, options);
+
+    return howard('' + config.url + path + qs, options);
+  }
+
+  return defaultedClient;
 }
 
 function json(response) {
@@ -57,6 +92,7 @@ function buffer(response) {
 }
 
 exports.default = howard;
+exports.withDefaults = withDefaults;
 exports.json = json;
 exports.text = text;
 exports.arrayBuffer = arrayBuffer;
