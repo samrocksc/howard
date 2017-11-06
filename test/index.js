@@ -1,4 +1,4 @@
-import howard, { json, text, arrayBuffer, blob, formData, buffer } from '../src/index';
+import howard, { withDefaults, json, text, arrayBuffer, blob, formData, buffer } from '../src/index';
 import expect from 'expect';
 import fetchMock from 'fetch-mock';
 import readBlob from 'read-blob';
@@ -145,5 +145,25 @@ describe('Howard Should', () => {
     return expect(request).resolves.toEqual(data);
   })
 
+  it('allows a buffer', function() {
+    if(!isNode) {
+      this.skip();
+    }
+
+    const data = Buffer.from('Hello World');
+    fetchMock.getOnce(config.url + '/buffer', { body: data, sendAsJson: false })
+    const request = buffer(howard(config.url + '/buffer'));
+
+    return expect(request).resolves.toEqual(data);
+  })
+
+  it('is unsupported in browser', function () {
+    if(isNode) {
+      this.skip();
+    }
+    fetchMock.getOnce(config.url + '/buffer', {})
+    const request = buffer(howard(config.url + '/buffer'));
+    return expect(request).rejects.toMatchObject(new Error('Method not implemented'));
+  })
 
 });
