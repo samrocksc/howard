@@ -42,5 +42,9 @@ jspm_packages
 # Lib
 lib
 
-# DS STORE :(
+# DS STORE :
 .DS_STORE
+
+#test
+.cache/
+.mocha-puppeteer/
