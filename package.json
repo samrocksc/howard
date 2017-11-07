@@ -1,6 +1,6 @@
 {
   "name": "howard",
-  "version": "0.1.6",
+  "version": "1.0.0",
   "description": "A wrapper for isomorphic fetch",
   "main": "index.js",
   "scripts": {
@@ -59,7 +59,6 @@
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.17.4",
     "query-string": "^5.0.0"
   }
 }

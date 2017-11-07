@@ -15,7 +15,7 @@ const config = {
 
 const isNode = (process &&  process.release && process.release.name === 'node');
 
-describe('Howard Should', () => {
+describe('Howard should', () => {
 
   beforeEach(function() {
     fetchMock.getOnce(config.url + '/get', pass)
@@ -26,7 +26,7 @@ describe('Howard Should', () => {
 
   //const api = howard(config);
 
-  it('has proper exports', (done) => {
+  it('have proper exports', (done) => {
     expect(typeof howard).toBe('function');
     expect(typeof json).toBe('function');
     expect(typeof text).toBe('function');
@@ -52,7 +52,7 @@ describe('Howard Should', () => {
     return expect(request).resolves.toMatchObject(expect.objectContaining({status: 404}));
   })
 
-  it.skip('should handle a query string', (done) => {
+  it.skip('handle a query string', (done) => {
     done();
   });
 
@@ -95,7 +95,7 @@ describe('Howard Should', () => {
     return expect(request).resolves.toEqual(img);
   });
 
-  it('blob rejects in unsupported node', function() {
+  it('should reject a blob in unsupported node', function() {
     if (!isNode) {
       this.skip();
     }
@@ -157,7 +157,7 @@ describe('Howard Should', () => {
     return expect(request).resolves.toEqual(data);
   })
 
-  it('is unsupported in browser', function () {
+  it('is buffer is unsupported in browser', function () {
     if(isNode) {
       this.skip();
     }
