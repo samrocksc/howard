@@ -48,3 +48,5 @@ lib
 #test
 .cache/
 .mocha-puppeteer/
+built-test/index.js
+package-lock.json

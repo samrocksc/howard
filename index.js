@@ -9,6 +9,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 require('isomorphic-fetch');
 
+var _queryString = require('query-string');
+
+var _queryString2 = _interopRequireDefault(_queryString);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function howard(path, options) {
   return fetch(path, options);
 }
@@ -36,7 +42,7 @@ function withDefaults() {
         }
       }
 
-      qs = '?' + queryString.stringify(query);
+      qs = '?' + _queryString2.default.stringify(query);
     }
     Object.assign({ credentials: 'include' }, options);
 
