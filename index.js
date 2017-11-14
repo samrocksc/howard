@@ -3,51 +3,28 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.handledFetch = exports.howard = undefined;
+exports.buffer = exports.formData = exports.blob = exports.arrayBuffer = exports.text = exports.json = exports.withDefaults = exports.default = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _isomorphicFetch = require('isomorphic-fetch');
-
-var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+require('isomorphic-fetch');
 
 var _queryString = require('query-string');
 
 var _queryString2 = _interopRequireDefault(_queryString);
 
-var _lodash = require('lodash');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function handledFetch(path, options) {
-  return (0, _isomorphicFetch2.default)(path, options).then(function (res) {
-    if (res.status >= 400) {
-      var err = new Error('Bad response from server');
-      err.status = res.status;
-      var contentType = res.headers.get('content-type');
-
-      if ((0, _lodash.startsWith)(contentType, 'application/json')) {
-        return res.json().then(function (content) {
-          err.content = content;
-          throw err;
-        });
-      }
-
-      return res.text().then(function (content) {
-        err.content = content;
-        throw err;
-      });
-    }
-    return res;
-  });
+function howard(path, options) {
+  return fetch(path, options);
 }
 
-function howard() {
+function withDefaults() {
   var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   config.url = config.url || '';
 
-  function apiFetch(path) {
+  function defaultedClient(path) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     var qs = '';
@@ -56,21 +33,75 @@ function howard() {
     }
 
     if (options.query) {
-      var query = (0, _lodash.omitBy)(options.query, _lodash.isUndefined);
+      // eslint-disable-next-line
+      var query = {};
+      // eslint-disable-next-line
+      for (var key in options.query) {
+        if (options.query[key] !== undefined) {
+          query[key] = options.query[key];
+        }
+      }
+
       qs = '?' + _queryString2.default.stringify(query);
     }
-    Object.assign(options, { credentials: 'include' });
+    Object.assign({ credentials: 'include' }, options);
 
-    return handledFetch('' + config.url + path + qs, options).then(function (res) {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return true;
-    });
+    return howard('' + config.url + path + qs, options);
   }
 
-  return apiFetch;
+  return defaultedClient;
 }
 
-exports.howard = howard;
-exports.handledFetch = handledFetch;
+function json(response) {
+  return Promise.resolve(response).then(function (res) {
+    return res.json();
+  });
+}
+
+function text(response) {
+  return Promise.resolve(response).then(function (res) {
+    return res.text();
+  });
+}
+
+function arrayBuffer(response) {
+  return Promise.resolve(response).then(function (res) {
+    return res.arrayBuffer();
+  });
+}
+
+function blob(response) {
+  return Promise.resolve(response).then(function (res) {
+    if (typeof res.blob === 'function') {
+      return res.blob();
+    }
+    return Promise.reject(new Error('Method not implemented'));
+  });
+}
+
+function formData(response) {
+  return Promise.resolve(response).then(function (res) {
+    if (typeof res.formData === 'function') {
+      return res.formData();
+    }
+    return Promise.reject(new Error('Method not implemented'));
+  });
+}
+
+function buffer(response) {
+  return Promise.resolve(response).then(function (res) {
+    if (typeof res.buffer === 'function') {
+      return res.buffer();
+    }
+    return Promise.reject(new Error('Method not implemented'));
+  });
+}
+
+exports.default = howard;
+exports.withDefaults = withDefaults;
+exports.json = json;
+exports.text = text;
+exports.arrayBuffer = arrayBuffer;
+exports.blob = blob;
+exports.formData = formData;
+exports.buffer = buffer;

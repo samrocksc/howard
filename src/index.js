@@ -1,58 +1,82 @@
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 import queryString from 'query-string';
-import { omitBy, startsWith, isUndefined } from 'lodash';
 
-function handledFetch(path, options) {
-  return fetch(path, options)
-    .then((res) => {
-      if (res.status >= 400) {
-        const err = new Error('Bad response from server');
-        err.status = res.status;
-        const contentType = res.headers.get('content-type');
-
-        if (startsWith(contentType, 'application/json')) {
-          return res.json()
-            .then((content) => {
-              err.content = content;
-              throw err;
-            });
-        }
-
-        return res.text()
-          .then((content) => {
-            err.content = content;
-            throw err;
-          });
-      }
-      return res;
-    });
+function howard(path, options) {
+  return fetch(path, options);
 }
 
-function howard(config = {}) {
+function withDefaults(config = {}) {
   config.url = config.url || '';
 
-  function apiFetch(path, options = {}) {
+  function defaultedClient(path, options = {}) {
     let qs = '';
     if (typeof options.body === 'object' && !(global.FormData && options.body instanceof FormData)) {
       options.body = JSON.stringify(options.body);
     }
 
     if (options.query) {
-      const query = omitBy(options.query, isUndefined);
+      // eslint-disable-next-line
+      let query = {};
+      // eslint-disable-next-line
+      for(let key in options.query) {
+        if (options.query[key] !== undefined) {
+          query[key] = options.query[key];
+        }
+      }
+
       qs = `?${queryString.stringify(query)}`;
     }
-    Object.assign(options, { credentials: 'include' });
+    Object.assign({ credentials: 'include' }, options);
 
-    return handledFetch(`${config.url}${path}${qs}`, options)
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        }
-        return true;
-      });
+    return howard(`${config.url}${path}${qs}`, options);
   }
 
-  return apiFetch;
+  return defaultedClient;
 }
 
-export { howard, handledFetch };
+function json(response) {
+  return Promise.resolve(response)
+    .then(res => res.json());
+}
+
+function text(response) {
+  return Promise.resolve(response)
+    .then(res => res.text());
+}
+
+function arrayBuffer(response) {
+  return Promise.resolve(response)
+    .then(res => res.arrayBuffer());
+}
+
+function blob(response) {
+  return Promise.resolve(response)
+    .then((res) => {
+      if (typeof res.blob === 'function') {
+        return res.blob();
+      }
+      return Promise.reject(new Error('Method not implemented'));
+    });
+}
+
+function formData(response) {
+  return Promise.resolve(response)
+    .then((res) => {
+      if (typeof res.formData === 'function') {
+        return res.formData();
+      }
+      return Promise.reject(new Error('Method not implemented'));
+    });
+}
+
+function buffer(response) {
+  return Promise.resolve(response)
+    .then((res) => {
+      if (typeof res.buffer === 'function') {
+        return res.buffer();
+      }
+      return Promise.reject(new Error('Method not implemented'));
+    });
+}
+
+export { howard as default, withDefaults, json, text, arrayBuffer, blob, formData, buffer };
