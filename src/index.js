@@ -1,4 +1,5 @@
 import 'isomorphic-fetch';
+import queryString from 'query-string';
 
 function howard(path, options) {
   return fetch(path, options);

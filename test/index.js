@@ -13,6 +13,8 @@ const config = {
   url: 'https://shoutinginfrench.com'
 }
 
+const mockArrayBuffer = new ArrayBuffer;
+
 const isNode = (process &&  process.release && process.release.name === 'node');
 
 describe('Howard should', () => {
@@ -20,8 +22,11 @@ describe('Howard should', () => {
   beforeEach(function() {
     fetchMock.getOnce(config.url + '/get', pass)
     fetchMock.postOnce(config.url + '/post', pass)
+    fetchMock.postOnce(config.url + '/checkAuth', { status: 301 });
     fetchMock.getOnce(config.url + '/fail', { status: 404 })
     fetchMock.getOnce(config.url + '/blob', img);
+    fetchMock.getOnce(config.url + '/qs?id=1', pass);
+    fetchMock.getOnce(config.url + '/arrayBuffer', mockArrayBuffer);
   });
 
   //const api = howard(config);
@@ -52,18 +57,20 @@ describe('Howard should', () => {
     return expect(request).resolves.toMatchObject(expect.objectContaining({status: 404}));
   })
 
-  it.skip('handle a query string', (done) => {
-    done();
+  // Query Strings
+  it('handle a query string', () => {
+    const api = withDefaults(config);
+    const options = {
+      method: 'GET',
+      query: {
+        id: 1
+      }
+    }
+    const request = json(api('/qs', options));
+    return expect(request).resolves.toEqual(pass);
   });
 
-  it('receive a json error message', (done) => {
-    done();
-  })
-
-  it('should handle a status code non 200 below 400', (done) => {
-    done();
-  })
-
+  // JSON
   it('handle json()', () => {
     const request = json(howard(config.url + '/get'))
     return expect(request).resolves.toMatchObject(pass);
@@ -75,6 +82,7 @@ describe('Howard should', () => {
   })
 
 
+  // Text
   it('handle text()', () => {
     const request = text(howard(config.url + '/get'))
     return expect(request).resolves.toEqual(JSON.stringify(pass));
@@ -85,6 +93,7 @@ describe('Howard should', () => {
     return expect(request).resolves.toEqual(JSON.stringify(pass));
   })
 
+  // Blobs
   it('handle blob()', function() {
     if (isNode) {
       this.skip();
@@ -164,6 +173,12 @@ describe('Howard should', () => {
     fetchMock.getOnce(config.url + '/buffer', {})
     const request = buffer(howard(config.url + '/buffer'));
     return expect(request).rejects.toMatchObject(new Error('Method not implemented'));
-  })
+  });
 
+  // withDefaults
+  it('is able to take defaults', function() {
+    const api = withDefaults(config);
+    const request = json(api('/get', { method: 'GET' }));
+    return expect(request).resolves.toEqual(pass);
+  });
 });
