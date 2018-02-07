@@ -5,7 +5,7 @@ import queryString from 'query-string';
  * @global
  * Howard - An isomorphic-fetch manager
  * @author Sam Clark(samrocksc@gmail.com)
- * * @param {string} path - The path of the endpoint you need to access.
+ * @param {string} path - The path of the endpoint you need to access.
  * @param {object} options - An object containing the method, and also the query parameters.
  * @return {object}  A Promise.
  */
