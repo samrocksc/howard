@@ -4,7 +4,7 @@
   "description": "A wrapper for isomorphic fetch",
   "main": "index.js",
   "scripts": {
-    "gendocs": "jsdoc src/index.js",
+    "gendocs": "jsdoc src/index.js -d docs",
     "clean": "rimraf lib",
     "test": "cross-env BABEL_ENV=commonjs mocha --async-only --compilers js:babel-register --recursive",
     "test:watch": "npm test -- --watch",

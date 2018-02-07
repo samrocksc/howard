@@ -1,4 +1,4 @@
-out/
+docs/
 coveralls.yml
 .travis.yml
 howard.png
