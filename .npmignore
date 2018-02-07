@@ -1,0 +1,7 @@
+out/
+coveralls.yml
+.travis.yml
+howard.png
+.mocha-puppeteer/
+.coverage/
+.cache/
