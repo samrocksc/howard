@@ -28,7 +28,8 @@ json(howard('https://swapi.co/api/people/1/'))
         "name": "Luke Skywalker",
         ...
       }
-    */ })
+    */
+  })
 ```
 
 Need Query Strings? put them in manually, or pass a param object!
@@ -41,7 +42,7 @@ json(howard(`https://swapi.co/api/people/1${paramString}`, { method: 'GET' }))
       {
         "whrascwo": "Lhuorwo Sorroohraanorworc",
         "acwoahrracao": "172",
-        "scracc": "77", 
+        "scracc": "77",
         ...
       }
     */
@@ -51,7 +52,7 @@ json(howard(`https://swapi.co/api/people/1${paramString}`, { method: 'GET' }))
 Using a param:
 
 ```javascript
-  json(howard('https://swapi.co/api/people/1', { method: 'GET', params: { format: wookiee } }))
+  json(howard('https://swapi.co/api/people/1', { method: 'GET', params: { format: 'wookiee' } }))
     .then((res) => {
       return res;
   })
@@ -60,11 +61,23 @@ Using a param:
 If you need to set up a client with a default configuration, use the `withDefaults` method and specify a config object that gets merged with options for every request. In this example we also use async await:
 
 ```Javascript
-const config = {
-  url: 'http://theduck.com/api',
+const api = withDefaults(config);
+
+json(api('/people/1/'))
+  .then((res) =>{
+    console.log('res', res)
+  })
+
+async function withDefaultsRequest() {
+  let response = await json(api('/people/1/', { method: 'GET'}));
+  return response;
+    /*
+      {
+        "name": "Luke Skywalker",
+        ...
+      }
+    */
 }
 
-const api = howard.withDefaults(config);
-
-const data = await api('/stuff', { method: 'GET'});
+withDefaultsRequest();
 ```
