@@ -15,10 +15,26 @@ var _queryString2 = _interopRequireDefault(_queryString);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * @global
+ * Howard - An isomorphic-fetch manager
+ * @author Sam Clark(samrocksc@gmail.com)
+ * * @param {string} path - The path of the endpoint you need to access.
+ * @param {object} options - An object containing the method, and also the query parameters.
+ * @return {object}  A Promise.
+ */
 function howard(path, options) {
+  if (options && options.body && !options.method) {
+    options.method = 'POST';
+  }
   return fetch(path, options);
 }
 
+/**
+ * withDefaults - include a default url for the api.
+ * @param {object} config - Any options passed in from options.
+ * @return {object}  A Promise.
+ */
 function withDefaults() {
   var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -52,24 +68,44 @@ function withDefaults() {
   return defaultedClient;
 }
 
+/**
+ * json
+ * @param {object} response - The return from a fetched promise.
+ * @return {object}  Raw JSON that has been resolved out of its promise.
+ */
 function json(response) {
   return Promise.resolve(response).then(function (res) {
     return res.json();
   });
 }
 
+/**
+ * text
+ * @param {object} response - The return from a fetched promise.
+ * @return {string}  If the expected resolver is a string, this stringifies it.
+ */
 function text(response) {
   return Promise.resolve(response).then(function (res) {
     return res.text();
   });
 }
 
+/**
+ * arrayBuffer
+ * @param {object} response - The return from a fetched promise.
+ * @return {string}  If the expected resolver is a string, this stringifies it.
+ */
 function arrayBuffer(response) {
   return Promise.resolve(response).then(function (res) {
     return res.arrayBuffer();
   });
 }
 
+/**
+ * blob
+ * @param {object} response - The return from a fetched promise.
+ * @return {string}  If the expected resolver is a string, this stringifies it.
+ */
 function blob(response) {
   return Promise.resolve(response).then(function (res) {
     if (typeof res.blob === 'function') {
@@ -79,6 +115,11 @@ function blob(response) {
   });
 }
 
+/**
+ * formData
+ * @param {object} response - The return from a fetched promise.
+ * @return {string}  If the expected resolver is a string, this stringifies it.
+ */
 function formData(response) {
   return Promise.resolve(response).then(function (res) {
     if (typeof res.formData === 'function') {
@@ -88,6 +129,12 @@ function formData(response) {
   });
 }
 
+/**
+ * buffer
+ * @param {object} response - The return from a fetched promise.
+ * @return {string}  Returns an error of method not implemented if buffer does not exist
+ * @desc testing
+ */
 function buffer(response) {
   return Promise.resolve(response).then(function (res) {
     if (typeof res.buffer === 'function') {

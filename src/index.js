@@ -2,12 +2,10 @@ import 'isomorphic-fetch';
 import queryString from 'query-string';
 
 /**
- * Howard - An isomorphic-fetch manager.
- */
-
-/**
- * The Main Module returns a promise..
- * @param {string} path - The path of the endpoint you need to access.
+ * @global
+ * Howard - An isomorphic-fetch manager
+ * @author Sam Clark(samrocksc@gmail.com)
+ * * @param {string} path - The path of the endpoint you need to access.
  * @param {object} options - An object containing the method, and also the query parameters.
  * @return {object}  A Promise.
  */
@@ -19,7 +17,7 @@ function howard(path, options) {
 }
 
 /**
- * @name withDefaults
+ * withDefaults - include a default url for the api.
  * @param {object} config - Any options passed in from options.
  * @return {object}  A Promise.
  */
@@ -53,7 +51,7 @@ function withDefaults(config = {}) {
 }
 
 /**
- * json
+ * json -(node/browser) wrap an API call with a json wrapper if you are receiving it back
  * @param {object} response - The return from a fetched promise.
  * @return {object}  Raw JSON that has been resolved out of its promise.
  */
@@ -63,7 +61,7 @@ function json(response) {
 }
 
 /**
- * text
+ * text -(node/browser) wrap an API call with text and return it as a promise
  * @param {object} response - The return from a fetched promise.
  * @return {string}  If the expected resolver is a string, this stringifies it.
  */
@@ -73,9 +71,9 @@ function text(response) {
 }
 
 /**
- * arrayBuffer
+ * arrayBuffer -(node/browser) wrap the API call and return the arrayBuffer in a promise
  * @param {object} response - The return from a fetched promise.
- * @return {string}  If the expected resolver is a string, this stringifies it.
+ * @return {string}  The resolver will be an arrayBuffer.
  */
 function arrayBuffer(response) {
   return Promise.resolve(response)
@@ -83,9 +81,9 @@ function arrayBuffer(response) {
 }
 
 /**
- * blob
+ * blob -(node only) Wraps blob in in API call and returns it.
  * @param {object} response - The return from a fetched promise.
- * @return {string}  If the expected resolver is a string, this stringifies it.
+ * @return {string}  If the expected resolver is a blob, this stringifies it.
  */
 function blob(response) {
   return Promise.resolve(response)
@@ -98,7 +96,7 @@ function blob(response) {
 }
 
 /**
- * formData
+ * formData -(browser) Wraps the formData in a promise and returns it.
  * @param {object} response - The return from a fetched promise.
  * @return {string}  If the expected resolver is a string, this stringifies it.
  */
@@ -114,7 +112,7 @@ function formData(response) {
 
 
 /**
- * buffer
+ * buffer -(node only) Returns a promise with a buffer inside
  * @param {object} response - The return from a fetched promise.
  * @return {string}  Returns an error of method not implemented if buffer does not exist
  * @desc testing
