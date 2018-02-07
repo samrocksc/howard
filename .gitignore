@@ -50,3 +50,4 @@ lib
 .mocha-puppeteer/
 built-test/index.js
 package-lock.json
+out/

@@ -52,7 +52,13 @@ describe('Howard should', () => {
     return expect(request).resolves.toMatchObject(expect.objectContaining({status: 200}));
   })
 
-  it('should handle failure', () => {
+  it('default to a post if given a body, but no method', () => {
+    const request = howard(config.url + '/post', {body: {yo: 'hello my friend'}})
+    return expect(request).resolves.toMatchObject(expect.objectContaining({status: 200}));
+
+  })
+
+  it('handle failure', () => {
     const request = howard(config.url + '/fail')
     return expect(request).resolves.toMatchObject(expect.objectContaining({status: 404}));
   })
