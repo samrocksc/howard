@@ -81,3 +81,17 @@ async function withDefaultsRequest() {
 
 withDefaultsRequest();
 ```
+
+**A Highly Opinionated Setup** - The goal of this setup would to create a lib style setup and return the fetch with the assumption that most of the app is going to be delivering JSON.  This would apply to almost all use cases.
+
+```
+import { withDefaults, json } from 'howard';
+
+const api = withDefaults({
+  url: 'http://api.url.com',
+});
+
+export function apiFetch(path, options = {}) {
+  return json(api(path, options));
+}
+```
