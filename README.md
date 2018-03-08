@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/samrocksc/howard.svg?branch=master)](https://travis-ci.org/samrocksc/howard)
 
+[![CircleCI](https://circleci.com/gh/samrocksc/howard.svg?style=svg)](https://circleci.com/gh/samrocksc/howard)
+
 [![Coverage Status](https://coveralls.io/repos/github/samrocksc/howard/badge.svg?branch=master)](https://coveralls.io/github/samrocksc/howard?branch=master)
 
 ![howard](howard.png)
