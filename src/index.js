@@ -13,6 +13,11 @@ function howard(path, options) {
   if (options && options.body && !options.method) {
     options.method = 'POST';
   }
+
+  if (options && typeof options.body === 'object' && !(global.FormData && options.body instanceof FormData)) {
+    options.body = JSON.stringify(options.body);
+  }
+
   return fetch(path, options);
 }
 
